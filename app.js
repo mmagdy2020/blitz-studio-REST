@@ -1,41 +1,41 @@
-var createError = require('http-errors');
-var express = require('express');
-var path = require('path');
-var cookieParser = require('cookie-parser');
-var logger = require('morgan');
+const express = require('express');
+const session = require('express-session');
+const bodyParser = require('body-parser');
+const dotenv = require('dotenv');
 
-var indexRouter = require('./routes/index');
-var usersRouter = require('./routes/users');
+const classRouter = require('./routes/classes.routes')
 
-var app = express();
 
-// view engine setup
-app.set('views', path.join(__dirname, 'views'));
-app.set('view engine', 'jade');
+const cors = require('cors');
 
-app.use(logger('dev'));
-app.use(express.json());
+const mongoose = require('mongoose')
+const SessionStore = require('connect-mongodb-session')(session)
+
+// to load environmental variables
+dotenv.config();
+
+const app = express();
+
+app.use(cors());
+app.use(bodyParser.json())
+app.use(classRouter)
+
+const store = new SessionStore({ // where I have to store my Data...
+  uri: process.env.MONGO_URL, // the URL for my DB  Bug: Uri instead of url
+  collection: 'dbSession' // will create a new Collection 
+})
+
+app.use(session({ secret: 'MySecret', resave: false, saveUninitialized: false, store: store })) //for session 2
+
 app.use(express.urlencoded({ extended: false }));
-app.use(cookieParser());
-app.use(express.static(path.join(__dirname, 'public')));
 
-app.use('/', indexRouter);
-app.use('/users', usersRouter);
 
-// catch 404 and forward to error handler
-app.use(function(req, res, next) {
-  next(createError(404));
-});
+mongoose.connect(process.env.MONGO_URL, { useNewUrlParser: true, useUnifiedTopology: true })
 
-// error handler
-app.use(function(err, req, res, next) {
-  // set locals, only providing error in development
-  res.locals.message = err.message;
-  res.locals.error = req.app.get('env') === 'development' ? err : {};
+.then(() => {
+  console.log("Connected to DB...")
 
-  // render the error page
-  res.status(err.status || 500);
-  res.render('error');
-});
+    app.listen(process.env.PORT || 4000)
 
-module.exports = app;
+}).catch(err => console.log(err))
+
