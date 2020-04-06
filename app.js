@@ -29,13 +29,12 @@ app.use(session({ secret: 'MySecret', resave: false, saveUninitialized: false, s
 
 app.use(express.urlencoded({ extended: false }));
 
-
+let port = process.env.PORT;
 mongoose.connect(process.env.MONGO_URL, { useNewUrlParser: true, useUnifiedTopology: true })
 
 .then(() => {
   console.log("Connected to DB...")
 
-    app.listen(process.env.PORT || 4000)
+    app.listen(port || 4000, () => console.log(`Listening on port ${port}`))
 
 }).catch(err => console.log(err))
-
