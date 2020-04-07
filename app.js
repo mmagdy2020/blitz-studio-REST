@@ -3,8 +3,11 @@ const session = require('express-session');
 const bodyParser = require('body-parser');
 const dotenv = require('dotenv');
 
-const classRouter = require('./routes/classes.routes')
+
+const classRouter = require('./routes/classes.routes');
+const attendanceRouter = require('./routes/attendance.routes'); // Mike
 const userRouter = require('./routes/user.route') // Sophia
+
 
 
 const cors = require('cors');
@@ -18,8 +21,11 @@ dotenv.config();
 const app = express();
 
 app.use(cors());
-app.use(bodyParser.json())
-app.use(classRouter)
+app.use(bodyParser.json());
+
+// Mounting routers
+app.use(classRouter);
+app.use(attendanceRouter); //Mike
 app.use(userRouter); // Sophia
 
 const store = new SessionStore({ // where I have to store my Data...
