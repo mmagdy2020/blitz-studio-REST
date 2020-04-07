@@ -3,7 +3,8 @@ const session = require('express-session');
 const bodyParser = require('body-parser');
 const dotenv = require('dotenv');
 
-const classRouter = require('./routes/classes.routes')
+const classRouter = require('./routes/classes.routes');
+const attendanceRouter = require('./routes/attendance.routes');
 
 
 const cors = require('cors');
@@ -18,7 +19,10 @@ const app = express();
 
 app.use(cors());
 app.use(bodyParser.json())
-app.use(classRouter)
+
+// Mounting routers
+app.use(classRouter);
+app.use(attendanceRouter);
 
 const store = new SessionStore({ // where I have to store my Data...
   uri: process.env.MONGO_URL, // the URL for my DB  Bug: Uri instead of url
