@@ -8,16 +8,21 @@ const DanceClass = new Schema({
     required:true
   },
   instructor: {
-    type: String
+    type: String,
+    required:true
   },
   description: {
-    type: String
+    type: String,
+    required:true
   },
   date: {
-    type: String
+    type: String,
   },
   time: {
-    type: String
+    type: String,
+  },
+  imgUrl:{
+    type: String,
   },
   isSeries: {
     type: Boolean
@@ -28,6 +33,7 @@ const DanceClass = new Schema({
   isPartOfSeries: {
     type: Boolean
   }
+ 
 });
 
 module.exports = mongoose.model("Dance-Class",DanceClass)
