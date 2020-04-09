@@ -7,7 +7,7 @@ router.post('/attendances', attendanceController.insert);
 
 router.get('/attendances', attendanceController.list);
 
-router.post('/attendances/:id', attendanceController.getById);
+router.get('/attendances/:id', attendanceController.getById);
 
 router.put('/attendances/:id', attendanceController.update);
 
