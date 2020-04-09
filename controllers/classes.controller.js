@@ -48,7 +48,7 @@ exports.updateById = (req, res, next) => {
       }
       return dClass.save();
     })
-    .then(result => {
+    .catch(err => {
       res.status(500).send({ errMsg: err });
     });
 };
