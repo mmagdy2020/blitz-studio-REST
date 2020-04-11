@@ -5,13 +5,17 @@ const User = require('../models/user.model')
 * CREATE: insert user into database
 */
 exports.insert = (req, res, next) => {
-  console.log("insert: req.body", req.body)
+  console.log("insert: req.body pre change", req.body);
+  req.body._id = undefined;
+  console.log("insert: req.body post change", req.body);
+
   User.create(req.body)
     .then(result => {
       console.log("insert: result", result);
       res.status(201).send(result);
     })
     .catch(err => {
+      console.log(err);
       res.status(500).send({ errMsg: err });
     });
 };
@@ -19,11 +23,14 @@ exports.insert = (req, res, next) => {
 * READ: get all users in database
 */
 exports.list = (req, res, next) => {
-  User.find()
+  User.find().sort({firstname:1})
     .then(users => {
-      res.status(200).send(users);
+      const returnUsers = users.map(user=> {user.password = undefined; return user});
+      console.log("list:",returnUsers)
+      res.status(200).send(returnUsers);
     })
     .catch(err => {
+      console.log(err);
       res.status(500).send({ errMsg: err });
     });
 }
@@ -33,10 +40,11 @@ exports.list = (req, res, next) => {
 exports.findById = (req, res, next) => {
   User.findById(req.params.id)
     .then(user => {
-      console.log("authenticate user found:", user);
+      console.log("findById user found:", user);
       res.status(200).send(user);
     })
     .catch(err => {
+      console.log(err);
       res.status(500).send({ errMsg: err });
     });
 }
@@ -49,10 +57,14 @@ exports.findById = (req, res, next) => {
 exports.authenticate = (req, res, next) => {
   User.findOne({ password: req.body.password, email: req.body.email })
     .then(user => {
+      if (user) {
+        user.password = undefined;
+      }
       console.log("authenticate user found:", user);
       res.status(200).send(user);
     })
     .catch(err => {
+      console.log(err);
       res.status(500).send({ errMsg: err });
     });
 
@@ -68,6 +80,7 @@ exports.check = (req, res, next) => {
       res.status(200).send({ userExists: user ? true : false });
     })
     .catch(err => {
+      console.log(err);
       res.status(500).send({ errMsg: err });
     });
 }
@@ -78,11 +91,16 @@ exports.check = (req, res, next) => {
 exports.update = (req, res, next) => {
   console.log("update: req.body", req.body);
   User.findByIdAndUpdate({ _id: req.body._id }, req.body)
-    .then(result => {
-      console.log("update: result", result);
-      res.status(201).send(result);
+    .then(user => {
+
+      User.findById(req.body._id).then(updatedUser =>{
+        updatedUser.password = undefined;
+        res.status(201).send(updatedUser);
+      });
+      
     })
     .catch(err => {
+      console.log(err);
       res.status(500).send({ errMsg: err });
     });
 };
@@ -92,11 +110,12 @@ exports.update = (req, res, next) => {
 exports.deleteById = (req, res, next) => {
   console.log("delete: req.body", req.body);
   User.findByIdAndDelete(req.params.id)
-    .then(result => {
-      console.log("delete: result", result);
-      res.status(201).send(result);
+    .then(_ => {
+      console.log("delete");
+      res.status(201).send();
     })
     .catch(err => {
+      console.log(err);
       res.status(500).send({ errMsg: err });
     });
 };
