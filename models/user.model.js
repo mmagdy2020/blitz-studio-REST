@@ -26,9 +26,18 @@ const User = new Schema({
   isMiuStudent: {
     type: Boolean
   },
-  password:{
+  password: {
     type: String,
     required: true
+  },
+  imgUrl: {
+    type: String,
+    default: '/images/blitz-studio-icon.jpg'
+  },
+  balance: {
+    type: Number,
+    required: true,
+    default: 0
   }
 });
 
