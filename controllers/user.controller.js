@@ -90,10 +90,10 @@ exports.check = (req, res, next) => {
 */
 exports.update = (req, res, next) => {
   console.log("update: req.body", req.body);
-  User.findByIdAndUpdate({ _id: req.body._id }, req.body)
+  User.findByIdAndUpdate({ _id: req.params.id }, req.body)
     .then(user => {
 
-      User.findById(req.body._id).then(updatedUser =>{
+      User.findById(eq.params.id).then(updatedUser =>{
         updatedUser.password = undefined;
         res.status(201).send(updatedUser);
       });
