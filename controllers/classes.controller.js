@@ -46,7 +46,8 @@ exports.updateById = (req, res, next) => {
       for (let i in req.body) {
         dClass[i] = req.body[i];
       }
-      return dClass.save();
+      dClass.save();
+      res.status(200).send(dClass);   // MO - Fixing Patch problem from not returning a result...
     })
     .catch(err => {
       res.status(500).send({ errMsg: err });
