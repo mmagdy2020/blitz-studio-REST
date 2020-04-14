@@ -23,10 +23,10 @@ exports.insert = (req, res, next) => {
 * READ: get all users in database
 */
 exports.list = (req, res, next) => {
-  User.find().sort({firstname:1})
+  User.find().sort({ firstname: 1 })
     .then(users => {
-      const returnUsers = users.map(user=> {user.password = undefined; return user});
-      console.log("list:",returnUsers)
+      const returnUsers = users.map(user => { user.password = undefined; return user });
+      console.log("list:", returnUsers)
       res.status(200).send(returnUsers);
     })
     .catch(err => {
@@ -93,11 +93,11 @@ exports.update = (req, res, next) => {
   User.findByIdAndUpdate({ _id: req.params.id }, req.body)
     .then(user => {
 
-      User.findById(eq.params.id).then(updatedUser =>{
+      User.findById(req.params.id).then(updatedUser => {
         updatedUser.password = undefined;
         res.status(201).send(updatedUser);
       });
-      
+
     })
     .catch(err => {
       console.log(err);
