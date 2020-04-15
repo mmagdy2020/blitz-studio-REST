@@ -52,4 +52,29 @@ exports.updateById = (req, res, next) => {
     .catch(err => {
       res.status(500).send({ errMsg: err });
     });
-};
+}
+
+
+//Creating / Deleting classSeries
+exports.createSerieById = (req,res,next) =>{
+  DanceClass.findById(req.params.classId)
+  .then(dClass=>{
+
+    const updatedOne = dClass.seriesClass.find(serie=> serie._id == req.body._id)
+
+    if(updatedOne){
+      for (let i in req.body) {
+        updatedOne[i] = req.body[i];
+      }
+
+    }else{
+          dClass.seriesClass.push(req.body)
+    }
+    dClass.save()
+    res.status(200).send(dClass); 
+  })
+  .catch(err => {
+    res.status(500).send({ errMsg: err });
+  });
+}
+

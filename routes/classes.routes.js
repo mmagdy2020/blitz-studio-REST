@@ -11,5 +11,8 @@ router.get('/classes/:classId',classController.getById)
 router.patch('/classes/:classId', classController.updateById);
 router.delete('/classes/:classId', classController.deleteById);
 
+router.patch('/classes/series/:classId',classController.createSerieById)
+
+
 
 module.exports = router;

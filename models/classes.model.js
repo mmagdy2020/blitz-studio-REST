@@ -5,35 +5,44 @@ const Schema = mongoose.Schema;
 const DanceClass = new Schema({
   title: {
     type: String,
-    required:true
+    required: true
   },
   instructor: {
     type: String,
-    required:true
+    required: true
   },
   description: {
     type: String,
-    required:true
+    required: true
   },
   date: {
     type: String,
+    required: true
+
   },
   time: {
     type: String,
+    required: true
+
   },
-  imgUrl:{
+  imgUrl: {
     type: String,
+    required: true
   },
+
   isSeries: {
     type: Boolean
   },
+
+  seriesClass: [{ weekNumber: { type: String }, desc: { type: String }, day: { type: String }, timeWeekly: { type: String } }]
+  ,
   isDropInCLass: {
     type: Boolean
   },
   isPartOfSeries: {
     type: Boolean
   }
- 
+
 });
 
-module.exports = mongoose.model("Dance-Class",DanceClass)
+module.exports = mongoose.model("Dance-Class", DanceClass)
