@@ -13,7 +13,6 @@ router.delete('/classes/:classId', classController.deleteById);
 
 router.patch('/classes/series/:classId',classController.createSerieById)
 
-router.patch('/classes/seriesupdate/:classId',classController.updateSerieById)
 
 
 module.exports = router;
