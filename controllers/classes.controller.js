@@ -48,7 +48,10 @@ exports.updateById = (req, res, next) => {
       }
       dClass.save();
       res.status(200).send(dClass);   // MO - Fixing Patch problem from not returning a result...
+<<<<<<< HEAD
 
+=======
+>>>>>>> d399e2f530c314ab6365fea60bf0985010b18d90
     })
     .catch(err => {
       res.status(500).send({ errMsg: err });
