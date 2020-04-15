@@ -60,7 +60,7 @@ exports.authenticate = (req, res, next) => {
       if (user) {
         user.password = undefined;
       }
-      console.log("authenticate user found:", user);
+      // console.log("authenticate user found:", user);
       res.status(200).send(user);
     })
     .catch(err => {
