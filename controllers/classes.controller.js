@@ -53,4 +53,34 @@ exports.updateById = (req, res, next) => {
     .catch(err => {
       res.status(500).send({ errMsg: err });
     });
-};
+}
+
+exports.createSerieById = (req,res,next) =>{
+  DanceClass.findById(req.params.classId)
+  .then(dClass=>{
+    dClass.seriesClass.push(req.body)
+    dClass.save()
+    res.status(200).send(dClass); 
+  })
+  .catch(err => {
+    res.status(500).send({ errMsg: err });
+  });
+}
+
+exports.updateSerieById = (req,res,next) =>{
+  DanceClass.findById(req.params.classId)
+  .then(dClass=>{
+    const updatedOne = dClass.seriesClass.find(serie=> serie._id == req.body._id)
+// console.log(updatedOne)
+    for (let i in req.body) {
+      updatedOne[i] = req.body[i];
+    }
+    dClass.save()
+    console.log(dClass)
+    res.status(200).send(dClass); 
+   
+  })
+  .catch(err => {
+    res.status(500).send({ errMsg: err });
+  });
+}
