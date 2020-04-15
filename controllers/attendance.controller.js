@@ -1,13 +1,17 @@
 const Attendance = require('../models/attendance.model');
 
 exports.insert = async (req, res, next) => {
+    console.log('inside insert............', req.body);
     try {
         let result = await Attendance.create(req.body);
+
+        console.log('inside insert............', result)
         res.status(201).send({ isSuccess: true, result: result });
     } catch (err) {
         res.status(500).send({ isSuccess: false, errMsg: err });
     }
 }
+
 exports.list = async (req, res, next) => {
     try {
         let result = await Attendance.find();

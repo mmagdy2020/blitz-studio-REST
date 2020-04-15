@@ -23,6 +23,36 @@ const app = express();
 app.use(cors());
 app.use(bodyParser.json());
 
+
+// Mike: swagger setup for api documentation
+
+
+const expressSwagger = require('express-swagger-generator')(app);
+let options = {
+  swaggerDefinition: {
+    host: process.env.BASE_URL || 'localhost:4000',
+    basePath: '/',
+    produces: [
+      "application/json",
+      "application/xml"
+    ],
+    schemes: ['http'],
+    securityDefinitions: {
+      JWT: {
+        type: 'apiKey',
+        in: 'header',
+        name: 'Authorization',
+        description: "",
+      }
+    }
+  },
+  basedir: __dirname, //app absolute path
+  files: ['./routes/**/*.js'] //Path to the API handle folder
+};
+
+expressSwagger(options);
+
+
 // Mounting routers
 app.use(classRouter);
 app.use(attendanceRouter); //Mike
